@@ -59,6 +59,125 @@ scores_df.corr()
 
 
 
+#2次元データの視覚化
+#matplotlibの準備
+import matplotlib.pyplot as plt
+
+%matplotlib inline
+
+#散布図
+#scatterメソッドで散布図を描画できる。
+#scatterの第1引数がx軸、第2引数がy軸のデータである。
+english_scores = np.array(df['英語'])
+math_scores = np.array(df['数学'])
+
+fig = plt.figure(figsize=(8, 8))
+ax = fig.add_subplot(111)
+
+#散布図
+ax.scatter(english_scores, math_scores)
+ax.set_xlabel('英語')
+ax.set_ylabel('数学')
+
+plt.show()
+
+#回帰直線
+#NumPyを使って回帰直線を求める
+#np.polyfit関数とnp.poly1d関数を使う。
+#英語の点数をx、数学の点数をyとしたときの回帰直線はy=β0+β1xで表される
+
+#回帰直線を散布図と一緒に描画する
+#係数β0とβ1を求める
+poly_fit = np.polyfit(english_scores, math_scores, 1)
+#β0+β1xを返す関数を作る
+poly_1d = np.poly1d(poly_fit)
+#直線を描画するためのx座標を作る
+xs = np.linspace(english_scores.min(), english_scores.max())
+#xsに対応するy座標を求める
+ys = poly_1d(xs)
+
+fig = plt.figure(figsize=(8, 8))
+ax = fig.add_subplot(111)
+ax.set_xlabel('英語')
+ax.set_ylabel('数学')
+ax.scatter(english_scores, math_scores, label='点数')
+ax.plot(xs, ys, color='gray', label=f'{poly_fit[1]:.2f} + {poly_fit[0]:.2f}x')
+#凡例の表示
+ax.legend(loc='upper left')
+
+plt.show()
+
+#ヒートマップ
+#ヒートマップはヒストグラムの2次元版を色によって表すことができるグラフ
+#hist2dメソッドで作成することができる
+fig = plt.figure(figsize=(10, 8))
+ax = fig.add_subplot(111)
+
+c = ax.hist2d(english_scores, math_scores, bins=[9, 8], range=[(35, 80), (55, 95)])
+ax.set_xticks(c[1])
+ax.set_yticks(c[2])
+#カラーバーの表示
+fig.colorbar(c[3], ax=ax)
+plt.show()
+
+
+#アンスコムの例
+#データの中で同じ指標を持っているが全く異なるデータという例を、アンスコムの例という。
+anscombe_data = np.load('./data/ch3_anscombe.npy')
+print(anscombe_data.shape)
+anscombe_data[0]
+
+#各データの平均・分散・相関係数・回帰直線を計算してDataFrameにまとめる。
+stats_df = pd.DataFrame(index=['Xの平均', 'Xの分散', 'Yの平均', 'Yの分散', 'XとYの相関係数', 'XとYの回帰直線'])
+
+for i, data in enumerate(anscombe_data):
+    dataX = data[:, 0]
+    dataY = data[:, 1]
+    poly_fit = np.polyfit(dataX, dataY, 1)
+    stats_df[f'data{i+1}'] =\
+        [f'{np.mean(dataX):.2f}',
+         f'{np.var(dataX):.2f}',
+         f'{np.mean(dataY):.2f}',
+         f'{np.var(dataY):.2f}',
+         f'{np.corrcoef(dataX, dataY)[0, 1]:.2f}',
+         f'{poly_fit[1]:.2f} + {poly_fit[0]:.2f}x']
+
+stats_df
+
+#data1~data4までどのデータも回帰直線の式まですべてが一致している。
+#指標上はこの4つのデータはすべて同じである。
+#これら4つのデータが全く同じであるかを確認するために散布図を描画してみる。
+
+#グラフを描画する領域を2×2個作る
+fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(10, 10), sharex=True, sharey=True)
+
+xs = np.linspace(0, 30, 100)
+for i, data in enumerate(anscombe_data):
+    poly_fit = np.polyfit(data[:,0], data[:,1], 1)
+    poly_1d = np.poly1d(poly_fit)
+    ys = poly_1d(xs)
+    #描画する領域の選択
+    ax = axes[i//2, i%2]
+    ax.set_xlim([4, 20])
+    ax.set_ylim([3, 13])
+    #タイトルを付ける
+    ax.set_title(f'data{i+1}')
+    ax.scatter(data[:,0], data[:,1])
+    ax.plot(xs, ys, color='gray')
+
+#グラフ同士の間隔を狭くする
+plt.tight_layout()
+plt.show()
+
+
+
+
+
+
+
+
+
+
 
 
 
