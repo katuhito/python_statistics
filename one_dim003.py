@@ -132,6 +132,105 @@ V(X, lambda x: 2*x + 3)
 
 
 
+#2次元の離散型確率変数
+#同時確率分布
+#2次元の確率変数では、1次元の確率変数を2つ同時に扱い(X, Y)と表記する。
+# その振る舞いは、取り得る値の組み合わせの集合とその確率によって定まる。
+#同時確率分布
+#確率変数(X, Y)の振る舞いを同時に考えた分布のことを同時確率分布(同時分布)という。
+
+#イカサマサイコロAの出目をY、サイコロAの出目とサイコロBの出目の和をXとした2次元の確率分布を考えてみる。
+#このときXとYそれぞれの取り得る集合の値
+# Y {1,2,3,4,5,6}  X {2,3,4,5,6,7,8,9,10,11,12} 
+
+#2次元確率分布の確率はxとｙを引数に取る関数とみることができる。
+#そのようなP(X=x, Y=y) = fxy(x,y)となる関数fxy(x,y)を同時確率関数という。
+
+#XとYの取り得る値の集合をそれぞれx_setとy_setとして定義する。
+x_set = np.arange(2, 13)
+y_set = np.arange(1, 7)
+
+#次に動じ確率変数を定義する。
+def f_XY(x, y):
+    if 1 <= y <= 6 and 1 <= x - y <= 6:
+        return y * (x - y) / 441
+    else:
+        return 0
+
+#確率変数(X,Y)の振る舞いはx_setとy_setとf_xyによって定義されるので、これらをリストにしてXYとする。
+XY = [x_set, y_set, f_XY]
+
+#確率分布をヒートマップを使って図示する
+prob = np.array([[f_xy(x_i, y_j) for y_j in y_set] for x_i in x_set])
+fig = plt.figure(figsize=(10, 8))
+ax = fig.add_subplot(111)
+c = ax.pcolor(prob)
+ax.set_xticks(np.arange(prob.shape[1]) + 0.5, minor=False)
+ax.set_yticks(np.arange(prob.shape[0]) + 0.5, minor=False)
+ax.set_xticklabels(np.arange(1, 7), minor=False)
+ax.set_yticklabels(np.arange(2, 13), minor=False)
+#ｙ軸を下が大きい数字になるように、上下逆転させる
+ax.invert_yaxis()
+#x軸の目盛りをグラフ上側に表示
+ax.xaxis.tick_top()
+fig.colorbar(c, ax=ax)
+plt.show()
+
+#確率が必ず0以上になっているかどうかの確認
+np.all(prob >= 0)
+
+#確率の総和が1かどうかを確認
+np.sum(prob)
+
+
+#周辺確率分布(周辺分布)
+#確率変数(X,Y)が同時確率関数によって定義されているとき、確率変数Xのみの振る舞い
+#つまり、確率関数Xの確率関数を知りたい状況のとき
+#このときの確率変数Xの確率関数fX(x)は、同時確率関数ｆXYにYの取り得る値をすべて代入して足し合わせて得られる関数によって求めることができる
+#これは同時確率関数fXYから確率変数Yの影響を取り除くと、確率変数Xの振る舞いを記述する確率変数Xの確率関数のみが残ると考える。
+#このようにして求められたfX(x)のことをXの周辺確率分布(Xの周辺分布)という。
+
+#Xの周辺分布
+def f_X(x):
+    return np.sum([f_XY(x, y_k) for y_k in y_set])
+
+#Yの周辺分布
+def f_Y(y):
+    return np.sum([f_XY(x_k, y) for x_k in x_set])
+
+#周辺分布が求まったところで、XとYをそれぞれ独立に考えることができる。
+X = [x_set, f_X]
+Y = [y_set, f_Y]
+
+#X,Yそれぞれについて確率の分布がどのようになっているか図示してみる
+prob_x = np.array([f_X(x_k) for x_k in x_set])
+prob_y = np.array([f_Y(y_k) for y_k in y_set])
+
+fig = plt.figure(figsize=(12,4))
+ax1 = fig.add_subplot(121)
+ax2 = fig.add_subplot(122)
+
+ax1.bar(x_set, prob_x)
+ax1.set_title('Xの周辺分布')
+ax1.set_xlabel('Xの取り得る値')
+ax1.set_ylabel('確率')
+ax1.set_xticks(x_set)
+
+ax2.bar(y_set, prob_y)
+ax2.set_title('Yの周辺分布')
+ax2.set_xlabel('Yの取り得る値')
+ax2.set_ylabel('確率')
+
+plt.show()
+
+
+
+
+
+
+
+
+
 
 
 
