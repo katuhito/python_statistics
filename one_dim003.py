@@ -225,6 +225,94 @@ plt.show()
 
 
 
+#2次元の離散型確率変数の指標
+#2次元の離散型確率変数については期待値や分散の他、共分散や相関係数といった指標を定義できる。
+
+#期待値：一回の試行で得られる値の平均値のこと。
+#この場合の期待値は、1次元の時とほとんど同じで、確率変数Xの期待値であればx1と確率の積の和
+#で求めることができる。
+
+np.sum([x_i * f_XY(x_i, y_j) for x_i in x_set for y_j in y_set])
+
+# 確率変数X,Yの関数g(X, Y)の期待値を定義して、これを期待値の関数とする
+
+def E(XY, g):
+    x_set, y_set, f_XY = XY
+    return np.sum([g(x_i, y_j) * f_XY(x_i, y_j) for x_i in x_set for y_j in y_set])
+
+#確率変数Xの期待値を求める。
+mean_X = E(XY, lambda x, y: x)
+mean_X
+
+#確率変数Yの期待値を求める
+mean_Y = E(XY, lambda x, y: y)
+mean_Y
+
+#期待値の線形性
+# a,bを実数、X,Yを確率変数としたとき
+# E(aX + bY) = aE(X) + bE(Y)  が成立する
+#a,bを2,3として線形性が成り立っているかを確かめてみる。
+a, b = 2, 3
+E(XY, lambda x, y: a*x + b*y)
+
+a * mean_X + b * mean_Y
+
+
+#分散
+#分散も1次元の時とほとんど同じで、Xの分散であればXについての偏差の二乗の期待値によって求めることができる。
+np.sum([(x_i - mean_X)**2 * f_XY(x_i, y_j) for x_i in x_set for y_j in y_set])
+
+#分散の関数
+def V(XY, g):
+    x_set, y_set, f_XY = XY
+    mean = E(XY, g)
+    return np.sum([(g(x_i, y_j) - mean)**2 * f_XY(x_i, y_j) for x_i in x_set for y_j in y_set])
+
+#Xの分散
+var_X = V(XY, g=lambda x, y: x)
+var_X
+
+#Yの分散
+var_Y = V(XY, g=lambda x, y: ｙ)
+var_Y
+
+
+#共分散
+#共分散：共分散とは、2 種類（2 変数）のデータの関係を示す指標です。共分散が正であるときは、一方の値が増加するともう一方の値が増加する傾向にあるといえます。これを正の相関といいます。
+#一方、共分散が負である時は、一方の値が増加するともう一方の値が減少する傾向にあるといえます。これを負の相関といいます。
+"""分散と共分散の公式
+   a,bを実数、X,Yを確率変数としたとき
+    V(aX + bY) = a^2V(X) + b^2V(Y) + 2abCov(X, Y)
+   が成り立つ
+"""
+#共分散を使うことで2つの確率変数X,Yの間にどの程度相関があるかがわかる。
+
+def Cov(XY):
+    x_set, y_set, f_XY = XY
+    mean_X = E(XY, lambda x, y: x)
+    mean_Y = E(XY, lambda x, y: y)
+    return np.sum([(x_i - mean_X) * (y_j - mean_Y) * f_XY(x_i, y_j) for x_i in x_set for y_j in y_set])
+
+#共分散を求める
+cov_xy = Cov(XY)
+cov_xy
+
+#V(2X + 3Y) = a^2V(X) + b^2V(Y) + 2abCov(X,Y)を確かめてみる
+V(XY, lambda x, y: a*x + b*y)
+a**2 * var_X + b**2 * var_Y + 2*a*b * cov_xy
+
+
+#相関係数
+#確率変数の相関係数は、データについての相関係数と同様に、共分散をそれぞれの標準偏差で割ることで求まる。
+cov_xy / np.sqrt(var_X * var_Y)
+
+
+
+
+
+
+
+
 
 
 
