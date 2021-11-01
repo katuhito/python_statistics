@@ -186,6 +186,51 @@ ax.legend()
 plt.show()
 
 
+"""ポアソン分布"""
+#ポアソン分布は、ランダムな事象が単位時間当たりに発生する件数が従う確率分布である。発生する件数の確率分布なので、取り得る値は{0,1,2,…}となる。そしてポアソン分布のパラメタはλで、λは正の実数である必要がある。
+#ポアソン分布Poi(λ)は単位時間当たり平均λ回起こるようなランダムな事象が、単位時間に起こる件数が従う確率分布なので、具体例として次のようなものがある。
+    #1日当たり平均2件の交通事故が発生する地域における、1日の交通事故の発生件数
+    #=>交通事故を完全にランダムな事象と捉えると、単位時間（一日）あたり発生する交通事故の発生件数は、Poi(2)に従う。
+    #1時間当たり平均10アクセスあるサイトへの、1時間当たりのアクセス件数
+    #=>サイトへのアクセスを完全にランダムな事象と捉えると、単位時間（1時間）当たりのサイトへのアクセス件数はPoi(λ)に従う。
+#ポアソン分布の期待値と分散はどちらもλになる。期待値と分散が同じになるというのはポアソン分布の特徴のひとつである。
+    #期待値：E(X)=λ　　　分散：V(X)=λ
+
+#ポアソン分布をNumPyで実装する。階乗x!はscipy.specialのfactorialを使用する。取り得る値は0以上の整数すべてであるが、実装上の都合でx_setを0以上19以下の整数としている。
+from scipy.special import factorial
+
+def Poi(lam):
+    x_set = np.arange(20)
+    def f(x):
+        if x in x_set:
+            return np.power(lam, x) / factorial(x) * np.exp(-lam)
+        else:
+            return 0
+    return x_set, f
+
+#ここで確率変数XはPoi(3)に従うとする
+lam = 3
+X = Poi(lam)
+
+#期待値と分散はともに3となる。
+check_prob(X)
+
+#図示
+plot_prob(X)
+
+#scipy.statusではポアソン分布はpoisson関数で作ることができる。パラメタλを3,5,8で変化させたときの、ポアソン分布を図示する。
+fig = plt.figure(figsize=(10, 6))
+ax = fig.add_subplot(111)
+
+x_set = np.arange(20)
+for lam, ls in zip([3,5,8], linestyles):
+    rv = stats.poisson(lam)
+    ax.plot(x_set, rv.pmf(x_set), label=f'lam:{lam}', ls=ls, color='gray')
+ax.set_xticks(x_set)
+ax.legend()
+
+plt.show()
+
 
 
 
