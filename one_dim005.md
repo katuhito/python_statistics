@@ -209,9 +209,10 @@ plt.show()
 ##### 期待値
 
 #連続型確率変数Xの平均は次式で定義される。これは確率変数Xの期待値とも呼ばれる。
-$$
+![\begin{align*}
     \mu=E(X)=\int_{-\infty}^{\infty}xf(x)dx
-$$
+\end{align*}
+](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Cbegin%7Balign%2A%7D%0A++++%5Cmu%3DE%28X%29%3D%5Cint_%7B-%5Cinfty%7D%5E%7B%5Cinfty%7Dxf%28x%29dx%0A%5Cend%7Balign%2A%7D%0A)
 
 #いかさまルーレットの期待値を求めてみる
 
@@ -227,13 +228,15 @@ integrate.quad(integrand, -np.inf, np.inf)[0]
 E(Y)=E(2X+3)=\int_{-\infty}^{\infty}(2X+3)f(x)dx
 \end{align*}
 ](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Cbegin%7Balign%2A%7D%0AE%28Y%29%3DE%282X%2B3%29%3D%5Cint_%7B-%5Cinfty%7D%5E%7B%5Cinfty%7D%282X%2B3%29f%28x%29dx%0A%5Cend%7Balign%2A%7D%0A)
+
 より一般的に確率変数$X$の変換g(X)の期待値が定義できる。
 
 ##### 連続型確率変数の期待値
 
-$$
-    E(g(X))=\int_{-\infty}^{\infty}g(x)f(x)dx
-$$
+![\begin{align*}
+E(g(X))=\int_{-\infty}^{\infty}g(x)f(x)dx
+\end{align*}
+](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Cbegin%7Balign%2A%7D%0AE%28g%28X%29%29%3D%5Cint_%7B-%5Cinfty%7D%5E%7B%5Cinfty%7Dg%28x%29f%28x%29dx%0A%5Cend%7Balign%2A%7D%0A)
 
 これを期待値の関数として実装しておく。引数gが確率変数に対する変換の関数になっている。
 ```
@@ -257,9 +260,10 @@ E(X, g=lambda x: 2*x+3)
 ###### 分散
 連続型確率変数Xの分散は次式で定義される。ここでは$μ$は確率変数$X$の期待値$E(X)$である。
 
-$$
-    \sigma^2=V(X)=\int_{-\infty}^{\infty}(x-\mu)^2f(x)dx
-$$
+![\begin{align*}
+\sigma^2=V(X)=\int_{-\infty}^{\infty}(x-\mu)^2f(x)dx
+\end{align*}
+](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Cbegin%7Balign%2A%7D%0A%5Csigma%5E2%3DV%28X%29%3D%5Cint_%7B-%5Cinfty%7D%5E%7B%5Cinfty%7D%28x-%5Cmu%29%5E2f%28x%29dx%0A%5Cend%7Balign%2A%7D%0A)
 
 いかさまルーレットの分散を求める。
 ```
@@ -272,15 +276,17 @@ integrate.quad(integrand, -np.inf, np.inf)[0]
 変換した確率変数についても分散を定義できる。確率変数$X$を$2X+3$と変換した確率変数$Y$について考えると、この分散は次式で定義することができる。
 ただし、$\mu=E(2X+3)$である。
 
-$$
-    V(Y)=V(2X+3)=\int_{-\infty}^{\infty}((2x+3)-\mu)^2f(x)dx
-$$
+![\begin{align*}
+V(Y)=V(2X+3)=\int_{-\infty}^{\infty}((2x+3)-\mu)^2f(x)dx
+\end{align*}
+](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Cbegin%7Balign%2A%7D%0AV%28Y%29%3DV%282X%2B3%29%3D%5Cint_%7B-%5Cinfty%7D%5E%7B%5Cinfty%7D%28%282x%2B3%29-%5Cmu%29%5E2f%28x%29dx%0A%5Cend%7Balign%2A%7D%0A)
 
 一般的な定義は確率変数$X$の変換$g(X)$の分散を定義できる。
 
-$$
-    V(g(X))=\int_{-\infty}^{\infty}(g(X)-E(g(X)))^2f(x)dx
-$$
+![\begin{align*}
+V(g(X))=\int_{-\infty}^{\infty}(g(X)-E(g(X)))^2f(x)dx
+\end{align*}
+](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Cbegin%7Balign%2A%7D%0AV%28g%28X%29%29%3D%5Cint_%7B-%5Cinfty%7D%5E%7B%5Cinfty%7D%28g%28X%29-E%28g%28X%29%29%29%5E2f%28x%29dx%0A%5Cend%7Balign%2A%7D%0A)
 
 これを分散の関数として実装しておく。引数gが確率変数に対する変換の関数である。
 ```
