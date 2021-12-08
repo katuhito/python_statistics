@@ -159,16 +159,22 @@ plt.show()
 #確率変数の変換を考える。例として、ルーレットの出た値を2倍して3を加えた$2X+3$を使う。これを$Y$とすると$Y$もまた連続型の確率変数になっている。
 
 #$Y$の密度関数を$g(y)$とすると
-$$
-    g(y)=(y-3)/2 (3<x<5)
-$$
-$$
-    g(y)=0
-$$
+![\begin{align*}
+g(y)=(y-3)/2 (3<x<5)
+\end{align*}
+](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Cbegin%7Balign%2A%7D%0Ag%28y%29%3D%28y-3%29%2F2+%283%3Cx%3C5%29%0A%5Cend%7Balign%2A%7D%0A)
+
+![\begin{align*}
+ g(y)=0
+\end{align*}
+](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Cbegin%7Balign%2A%7D%0A+g%28y%29%3D0%0A%5Cend%7Balign%2A%7D%0A)
 
 分布関数は$G(y)$とする
 
-$G(y)=P(Y<y)=g(y)$
+![\begin{align*}
+G(y)=P(Y<y)=g(y)
+\end{align*}
+](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Cbegin%7Balign%2A%7D%0AG%28y%29%3DP%28Y%3Cy%29%3Dg%28y%29%0A%5Cend%7Balign%2A%7D%0A)
 
 $定積分(yから-∞)$
 ```
@@ -209,6 +215,7 @@ plt.show()
 ##### 期待値
 
 #連続型確率変数Xの平均は次式で定義される。これは確率変数Xの期待値とも呼ばれる。
+
 ![\begin{align*}
     \mu=E(X)=\int_{-\infty}^{\infty}xf(x)dx
 \end{align*}
