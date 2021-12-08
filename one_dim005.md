@@ -223,9 +223,10 @@ integrate.quad(integrand, -np.inf, np.inf)[0]
 ```
 
 変換した確率変数の期待値を考える事ができ、例えば確率変数$X$を$2x+3$と変換した確率変数$Y$の期待値は次式で定義される。
-$$
-    E(Y)=E(2X+3)=\int_{-\infty}^{\infty}(2X+3)f(x)dx
-$$
+![\begin{align*}
+E(Y)=E(2X+3)=\int_{-\infty}^{\infty}(2X+3)f(x)dx
+\end{align*}
+](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Cbegin%7Balign%2A%7D%0AE%28Y%29%3DE%282X%2B3%29%3D%5Cint_%7B-%5Cinfty%7D%5E%7B%5Cinfty%7D%282X%2B3%29f%28x%29dx%0A%5Cend%7Balign%2A%7D%0A)
 より一般的に確率変数$X$の変換g(X)の期待値が定義できる。
 
 ##### 連続型確率変数の期待値
